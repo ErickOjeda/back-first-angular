@@ -50,6 +50,16 @@ public class PessoaController {
 			throw new Excecao(ERROR + e.getMessage());
 		}
 	}
+
+	@DeleteMapping("/{id}")
+	private ResponseEntity<String> delete(@PathVariable("id") final Long id){
+		try {
+			pessoaService.delete(id);
+			return new ResponseEntity<>("Registro deletado", HttpStatus.OK);
+		} catch (Exception e){
+			throw new Excecao(ERROR + e.getMessage());
+		}
+	}
 	
 	@GetMapping("erro")
 	private ResponseEntity<List<PessoaDTO>> exemploErro(){

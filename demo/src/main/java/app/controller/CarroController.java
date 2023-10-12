@@ -52,6 +52,16 @@ public class CarroController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    private ResponseEntity<String> delete(@PathVariable("id") final Long id){
+        try {
+            carroService.delete(id);
+            return new ResponseEntity<>("Registro deletado", HttpStatus.OK);
+        } catch (Exception e){
+            throw new Excecao(ERROR + e.getMessage());
+        }
+    }
+
     @GetMapping("erro")
     private ResponseEntity<List<CarroDTO>> exemploErro(){
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

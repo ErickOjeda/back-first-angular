@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import app.entity.Carro;
 import app.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,16 @@ public class LivroService {
         Livro livrosalvo = livroRepository.save(livro);
 
         return this.toLivroDTO(livrosalvo);
+
+    }
+
+    public void delete(Long id){
+
+        final Livro livroBanco = livroRepository.findById(id).orElse(null);
+
+        Assert.isTrue(livroBanco != null, "Registro não encontrado");
+
+        livroRepository.delete(livroBanco);
 
     }
 

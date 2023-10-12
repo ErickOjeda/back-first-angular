@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import app.entity.Livro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,15 @@ public class PessoaService {
 		return this.toPessoaDTO(pessoaSalva); // Implement a conversion method if necessary
 	}
 
+	public void delete(Long id){
+
+		final Pessoa pessoaBanco = pessoaRepository.findById(id).orElse(null);
+
+		Assert.isTrue(pessoaBanco != null, "Registro não encontrado");
+
+		pessoaRepository.delete(pessoaBanco);
+
+	}
 
 	private PessoaDTO toPessoaDTO(Pessoa pessoa) {
 		PessoaDTO pessoaDTO = new PessoaDTO();

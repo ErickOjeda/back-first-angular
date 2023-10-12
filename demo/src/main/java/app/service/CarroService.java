@@ -52,6 +52,16 @@ public class CarroService {
 
     }
 
+    public void delete(Long id){
+
+        final Carro carroBanco = carroRepository.findById(id).orElse(null);
+
+        Assert.isTrue(carroBanco != null, "Registro não encontrado");
+
+        carroRepository.delete(carroBanco);
+
+    }
+
     private CarroDTO toCarroDTO(Carro carro) {
         CarroDTO carroDTO = new CarroDTO();
         carroDTO.setId(carro.getId());
