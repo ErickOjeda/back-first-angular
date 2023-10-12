@@ -2,15 +2,11 @@ package app.controller;
 
 import java.util.List;
 
+import app.exception.Excecao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import app.dto.PessoaDTO;
 import app.service.PessoaService;
@@ -19,7 +15,9 @@ import app.service.PessoaService;
 @RequestMapping("/api/pessoa")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PessoaController {
-	
+
+	private static final String ERROR = "Error : ";
+
 	@Autowired
 	private PessoaService pessoaService;
 	
@@ -40,6 +38,16 @@ public class PessoaController {
 			return new ResponseEntity<>(pessoaSalva, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PutMapping("/{id}") // Adjust the endpoint path to "/pessoa/{id}"
+	private ResponseEntity<PessoaDTO> editPessoa(@PathVariable("id") final Long id, @RequestBody PessoaDTO pessoaDTO){
+		try {
+			PessoaDTO pessoaSalva = pessoaService.edit(id, pessoaDTO); // Call the appropriate service method for editing a Pessoa
+			return new ResponseEntity<>(pessoaSalva, HttpStatus.OK);
+		} catch (Exception e){
+			throw new Excecao(ERROR + e.getMessage());
 		}
 	}
 	

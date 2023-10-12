@@ -2,6 +2,7 @@ package app.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import app.dto.PessoaDTO;
 import app.entity.Pessoa;
 import app.repository.PessoaRepository;
+import org.springframework.util.Assert;
 
 @Service
 public class PessoaService {
@@ -33,6 +35,20 @@ public class PessoaService {
 
 		return this.toPessoaDTO(pessoasalva);
 	}
+
+
+	public PessoaDTO edit(Long id, PessoaDTO pessoaDTO) {
+		Optional<Pessoa> pessoaBanco = pessoaRepository.findById(id);
+
+		Assert.isTrue(pessoaBanco.isPresent(), "Registro não encontrado");
+		Assert.isTrue(pessoaDTO.getId().equals(id), "Id fornecido na URL não condiz com o corpo da requisição");
+
+		Pessoa pessoa = this.toPessoa(pessoaDTO); // Implement a conversion method if necessary
+		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+
+		return this.toPessoaDTO(pessoaSalva); // Implement a conversion method if necessary
+	}
+
 
 	private PessoaDTO toPessoaDTO(Pessoa pessoa) {
 		PessoaDTO pessoaDTO = new PessoaDTO();
